@@ -1,20 +1,13 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace RazorPagesProject.Tests.IntegrationTests
 {
-    #region snippet1
     public class BasicTests 
-        : IClassFixture<WebApplicationFactory<RazorPagesProject.Startup>>
     {
-        private readonly WebApplicationFactory<RazorPagesProject.Startup> _factory;
-
-        public BasicTests(WebApplicationFactory<RazorPagesProject.Startup> factory)
-        {
-            _factory = factory;
-        }
-
         [Theory]
         [InlineData("/")]
         [InlineData("/Index")]
@@ -24,16 +17,23 @@ namespace RazorPagesProject.Tests.IntegrationTests
         public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
-            var client = _factory.CreateClient();
+            var builder = WebHost.CreateDefaultBuilder()
+                .UseEnvironment("Development")
+                .UseStartup<Startup>();
 
-            // Act
-            var response = await client.GetAsync(url);
+            using (var server = new TestServer(builder))
+            {
+                var client = server.CreateClient();
 
-            // Assert
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal("text/html; charset=utf-8", 
-                response.Content.Headers.ContentType.ToString());
+                // Act
+                var response = await client.GetAsync(url);
+
+                // Assert
+                response.EnsureSuccessStatusCode(); // Status Code 200-299
+                Assert.Equal("text/html; charset=utf-8",
+                    response.Content.Headers.ContentType.ToString());
+            }
+
         }
     }
-    #endregion
 }

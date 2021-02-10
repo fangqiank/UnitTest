@@ -9,7 +9,6 @@ using RazorPagesProject.Data;
 
 namespace RazorPagesProject.Tests
 {
-    #region snippet1
     public class CustomWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup: class
     {
@@ -52,5 +51,4 @@ namespace RazorPagesProject.Tests
             });
         }
     }
-    #endregion
 }
