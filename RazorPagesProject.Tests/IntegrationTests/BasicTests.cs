@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using RazorPagesProject;
-using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace IntergrationTest
+namespace RazorPagesProject.Tests.IntegrationTests
 {
-    public class BasicTests : IClassFixture<WebApplicationFactory<Startup>>
+    #region snippet1
+    public class BasicTests 
+        : IClassFixture<WebApplicationFactory<RazorPagesProject.Startup>>
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly WebApplicationFactory<RazorPagesProject.Startup> _factory;
 
-        public BasicTests(WebApplicationFactory<Startup> factory)
+        public BasicTests(WebApplicationFactory<RazorPagesProject.Startup> factory)
         {
             _factory = factory;
         }
@@ -34,8 +31,9 @@ namespace IntergrationTest
 
             // Assert
             response.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal("text/html; charset=utf-8",
+            Assert.Equal("text/html; charset=utf-8", 
                 response.Content.Headers.ContentType.ToString());
         }
     }
+    #endregion
 }
